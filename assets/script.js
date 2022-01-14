@@ -1,50 +1,38 @@
 var searchFormEl = document.querySelector("#search");
+var apiKey = "d35dfaab0c2da2d1c3dcb0514127ce3f";
 
-var getCurrentWeather = function() {
-    // var lat 
-    // var lon
+var getCurrentWeather = async function(city) {
+    // get lat & lon of city
+    var latLongApi = await fetch("http://api.openweathermap.org/geo/1.0/direct?q=" + city + "&limit=1&appid=" + apiKey);
 
+    var latLongData = await latLongApi.json();
+    var latitude = latLongData[0].lat;
+    var longitude = latLongData[0].lon;
 
+    // get current weather for city
+    var apiResponse = await fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude +"&units=imperial&exclude=alerts,minutely&appid=" + apiKey);
+    var data = await apiResponse.json();
 
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=33.518589&lon=-86.810356&units=imperial&exclude=alerts,minutely&appid=d35dfaab0c2da2d1c3dcb0514127ce3f";
+    console.log(data);
 
-    fetch(apiUrl)
-        .then(function(response) {
-            // request was successful
-            if (response.ok){
-                response.json().then(function(data) {
-                    displayCurrentWeather(data);
-                })
-            } else {
-                alert("Error: " + response.statusText);
-            }
-        });
-};
-
-var displayCurrentWeather = function(data) {
+    // HTML variables
     var currentDate = document.querySelector('#city');
     var currentTemperature = document.querySelector('#temp');
     var currentWind = document.querySelector('#wind');
     var currentHumiity = document.querySelector('#humidity');
     var currentUV = document.querySelector('#uv');
 
+    // setting HTML elements to current weather
     currentDate.textContent = data.current.dt * 1000;
     currentTemperature.textContent = "Temp: " + data.current.temp + " °F";
     currentWind.textContent = "Wind: " + data.current.wind_speed + " MPH";
     currentHumiity.textContent = "Humidity: " + data.current.humidity + " %";
     currentUV.textContent = "UV Index: " + data.current.uvi;
 
-
-
-
-    // for(var i = 0; i < 5; i++) {
-    //     console.log(data.daily[i]);
-
-        
-    // };
+    
 };
 
-getCurrentWeather();
+getCurrentWeather("Dallas");
 
 // var formSubmitHandler = function(event) {
 //     // prevent page from refreshing
