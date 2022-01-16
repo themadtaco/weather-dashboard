@@ -1,4 +1,5 @@
 var searchFormEl = document.querySelector("#search");
+var searchButtonEl = document.querySelector("#sBtn");
 var apiKey = "d35dfaab0c2da2d1c3dcb0514127ce3f";
 
 var getCurrentWeather = async function(city) {
@@ -32,16 +33,16 @@ var getCurrentWeather = async function(city) {
     
 };
 
-getCurrentWeather("Dallas");
+var formSubmitHandler = function(event) {
+    // prevent page from refreshing
+    event.preventDefault();
 
-// var formSubmitHandler = function(event) {
-//     // prevent page from refreshing
-//     event.preventDefault();
+    // get value from input element
+    var city = searchFormEl.value.trim();
 
-//     // get value from input element
-//     var city = searchFormEl.value.trim();
+    if (city) {
+        getCurrentWeather(city);
+    }
+};
 
-//     if (city) {
-//         getCurrentWeather(city);
-//     }
-// };
+searchButtonEl.addEventListener("click", formSubmitHandler);
