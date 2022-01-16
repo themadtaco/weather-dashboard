@@ -17,17 +17,33 @@ var getCurrentWeather = async function(city) {
     console.log(data);
 
     // HTML variables
-    var currentDate = document.querySelector('#city');
+    var currentDate = new Date(data.current.dt * 1000);
+    var currentDay = currentDate.getDate();
+    var currentMonth = currentDate.getMonth() + 1;
+    var currentYear = currentDate.getFullYear();
+    var currentDateEl = document.querySelector('#city');
     var currentTemperature = document.querySelector('#temp');
     var currentWind = document.querySelector('#wind');
     var currentHumiity = document.querySelector('#humidity');
     var currentUV = document.querySelector('#uv');
 
     // setting HTML elements to current weather
-    currentDate.textContent = data.current.dt * 1000;
+    currentDateEl.textContent = city + " (" + currentMonth + "/" + currentDay + "/" + currentYear + ")";
     currentTemperature.textContent = "Temp: " + data.current.temp + " °F";
     currentWind.textContent = "Wind: " + data.current.wind_speed + " MPH";
     currentHumiity.textContent = "Humidity: " + data.current.humidity + " %";
+
+
+    if (data.current.uvi < 2) {
+        currentUV.setAttribute("class", "bg-success w-25 rounded");
+    } else if (data.current.uvi < 5) {
+        currentUV.setAttribute("class", "bg-warning w-25 rounded");
+    } else {
+        currentUV.setAttribute("class", "bg-danger w-25 rounded");
+    };
+
+    console.log(data.current.uvi);
+
     currentUV.textContent = "UV Index: " + data.current.uvi;
 
     // get 5 day forecast data
@@ -76,18 +92,6 @@ var getCurrentWeather = async function(city) {
         forecastHumidity.innerHTML = "Humidity: " + forecastData.list[forecastIndex].main.temp + "%";
         forecastEl[i].append(forecastHumidity);
     }
-
-    // var forecast1Date = document.querySelector("#forecast1Date");
-    // var forecast1Icon = document.querySelector("#forecast1Icon");
-    // var forecast1Temp = document.querySelector("#forecast1Temp");
-    // var forecast1Wind = document.querySelector("#forecast1Wind");
-    // var forecast1Humidity = document.querySelector("#forecast1Humidity");
-
-    // forecast1Date.textContent = forecastData.list[0].dt;
-    // forecast1Icon.textContent = forecastData.list[0].weather.icon;
-    // forecast1Temp.textContent = forecastData.list[0].main.temp;
-    // forecast1Wind.textContent = forecastData.list[0].wind.speed;
-    // forecast1Humidity.textContent = forecastData.list[0].main.humidity;
     
 };
 
