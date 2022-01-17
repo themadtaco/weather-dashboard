@@ -1,6 +1,7 @@
 var searchFormEl = document.querySelector("#search");
 var searchButtonEl = document.querySelector("#sBtn");
 var apiKey = "d35dfaab0c2da2d1c3dcb0514127ce3f";
+var searchHistoryEl = document.querySelector("#search-history");
 
 var getCurrentWeather = async function(city) {
     // get lat & lon of city
@@ -33,17 +34,14 @@ var getCurrentWeather = async function(city) {
     currentWind.textContent = "Wind: " + data.current.wind_speed + " MPH";
     currentHumiity.textContent = "Humidity: " + data.current.humidity + " %";
 
-
+    // if statement to check the uvi and update the background color accordingly
     if (data.current.uvi < 2) {
-        currentUV.setAttribute("class", "bg-success w-25 rounded");
+        currentUV.setAttribute("class", "bg-success width rounded");
     } else if (data.current.uvi < 5) {
-        currentUV.setAttribute("class", "bg-warning w-25 rounded");
+        currentUV.setAttribute("class", "bg-warning width rounded");
     } else {
-        currentUV.setAttribute("class", "bg-danger w-25 rounded");
+        currentUV.setAttribute("class", "bg-danger width rounded");
     };
-
-    console.log(data.current.uvi);
-
     currentUV.textContent = "UV Index: " + data.current.uvi;
 
     // get 5 day forecast data
@@ -76,31 +74,42 @@ var getCurrentWeather = async function(city) {
         forecastIcon.setAttribute("alt", forecastData.list[forecastIndex].weather[0].description);
         forecastEl[i].append(forecastIcon);
 
-        // create forecast content
+        // create forecast temp
         var forecastTemp = document.createElement("p");
         forecastTemp.setAttribute("class", "card-text");
         forecastTemp.innerHTML = "Temp: " + forecastData.list[forecastIndex].main.temp + "°F";
         forecastEl[i].append(forecastTemp);
-
+        // create forecast wind
         var forecastWind = document.createElement("p");
         forecastWind.setAttribute("class", "card-text");
         forecastWind.innerHTML = "Wind: " + forecastData.list[forecastIndex].wind.speed + " MPH";
         forecastEl[i].append(forecastWind);
-
+        // create forecast humidity
         var forecastHumidity = document.createElement("p");
         forecastHumidity.setAttribute("class", "card-text");
         forecastHumidity.innerHTML = "Humidity: " + forecastData.list[forecastIndex].main.temp + "%";
         forecastEl[i].append(forecastHumidity);
     }
-    
 };
 
+// get value from search box
 var formSubmitHandler = function(event) {
     // prevent page from refreshing
     event.preventDefault();
 
     // get value from input element
     var city = searchFormEl.value.trim();
+
+    // save searched city to local storage
+    var cityH = searchFormEl.value;
+    window.localStorage.setItem("search", JSON.stringify(cityH));
+    console.log(JSON.parse(window.localStorage.getItem('search')));
+
+    // display searched city to page
+    var cityItem = document.createElement("li");
+    cityItem.setAttribute("class", "list-group-item");
+    cityItem.innerHTML = JSON.parse(window.localStorage.getItem('search'));
+    searchHistoryEl.append(cityItem);
 
     if (city) {
         getCurrentWeather(city);
