@@ -14,3 +14,6 @@ Users will also see their search history to the side.
 https://themadtaco.github.io/whats-my-weather/
 
 ![website screenshot](https://github.com/themadtaco/whats-my-weather/tree/main/assets/images/whats-my-weather.png?raw=true)
+
+## Contribution 
+Made by Fabian Uribe
