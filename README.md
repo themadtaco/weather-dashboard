@@ -13,4 +13,4 @@ Users will also see their search history to the side.
 ## Website
 https://themadtaco.github.io/whats-my-weather/
 
-!(https://github.com/themadtaco/whats-my-weather/tree/main/assets/images/whats-my-weather.png?raw=true)
+![website screenshot](https://github.com/themadtaco/whats-my-weather/tree/main/assets/images/whats-my-weather.png?raw=true)
